@@ -6,20 +6,39 @@ import java.sql.SQLException;
 import redis.clients.jedis.Jedis;
 
 public class RedisService {
-	static Jedis jedis = new Jedis("redis-11828.c10.us-east-1-2.ec2.redns.redis-cloud.com",11828);
+	 Jedis jedis;
 	
-
+	 
 	private static RedisService _service;
-	
+	static int REDIS_PORT = 0;
+    public static RedisService getInstsance() {
+    	if(_service == null) {
+    		_service = new RedisService();
+    		_service.jedis =  new Jedis( "{{REDIS_URL}}"  , REDIS_PORT);
+    		_service.jedis.auth("{{REDIS_AUTH_KEY}}"); 
+    	}
+    	
+    	return _service;
+    }
     
+   
+    public void set(String key, String value) {
+    	//ADD CODE TO SET THE VALUE
+    }
+    
+    public String get(String key) {
+    	//ADD CODE TO RETRIEVE THE VALUE
+    	
+    	return ""; //should be replaced with actual value
+    }
 	
-
 	public static void main(String[] args) throws SQLException {
-		jedis.auth("8bsbyheXv3c1bsxRefJkZhL9SHgVSTQZ");
-	   jedis.set("Sampleone", "abc");
-	   
-	   
-	   System.out.println("Vaue:"+ jedis.get("Sampleone"));
+		
+	
+	  RedisService service = RedisService.getInstsance();
+	  // service.set("somekey","somevalue")
+	  // service.get("somekey");
+	  System.out.println("Vaue:"+ service.get("somekey")); 
 		
 		//get();
 	}
